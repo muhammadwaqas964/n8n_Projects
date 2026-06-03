@@ -68,7 +68,7 @@
     {
       "parameters": {
         "method": "POST",
-        "url": "https://discord.com/api/webhooks/1511687658408116356/e2ryTybpykRWDlPoOscO6t3lwEW_-A-aU41BTePxcxBmrW4fHM_jC41gYE_OyuDr4qsg",
+        "url": "Paste_Your_Discord_Url",
         "sendBody": true,
         "bodyParameters": {
           "parameters": [
