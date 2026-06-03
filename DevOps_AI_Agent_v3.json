@@ -1,0 +1,227 @@
+{
+  "name": "Fiverr DevOps Agent v2",
+  "nodes": [
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.4,
+      "position": [
+        400,
+        0
+      ],
+      "id": "f8072b03-f8a0-4e59-931a-62affb66429a",
+      "name": "When chat message received",
+      "webhookId": "fiverr-devops-v2-trigger"
+    },
+    {
+      "parameters": {
+        "options": {
+          "systemMessage": "You are a senior DevOps and Cloud Engineer with 10+ years of experience. You have deep expertise in:\n\n- AWS (EC2, EKS, ECS, Lambda, RDS, S3, CloudFront, Route53, IAM, VPC, CodePipeline, CodeBuild, CodeDeploy, ECR, CloudWatch, Secrets Manager)\n- Azure (AKS, Azure DevOps, App Service, Azure Functions, Azure Container Registry, Azure Monitor, Key Vault, Virtual Networks)\n- CI/CD (GitHub Actions, GitLab CI, Jenkins, ArgoCD, Tekton)\n- Containers (Docker, Kubernetes, Helm, Kustomize)\n- Infrastructure as Code (Terraform, Pulumi, AWS CDK, CloudFormation)\n- Monitoring (Prometheus, Grafana, Datadog, ELK Stack, CloudWatch)\n- Security (DevSecOps, SonarQube, Snyk, Trivy, OWASP)\n- Linux, Bash scripting, Python automation\n- Networking (DNS, Load Balancers, SSL/TLS, VPN, Firewalls)\n\nYou are also a professional Fiverr sales consultant. Your job is to:\n\nPHASE 1 - QUALIFY THE CLIENT:\n1. Greet the client professionally and warmly\n2. Ask smart, specific technical questions to gather ALL project requirements\n3. Never ask more than 3 questions at a time\n4. Keep conversation natural and professional\n5. Gather: tech stack, current infrastructure state, deployment target, timeline, budget, and access details\n\nPHASE 2 - CONFIRM REQUIREMENTS:\nOnce you have enough information, summarize what you understood and confirm with the client before proceeding.\nAlways end Phase 2 with: 'Does this summary look correct? Please confirm and I will generate the full implementation plan.'\n\nPHASE 3 - GENERATE PROJECT PLAN:\nONLY generate the project plan when the client has explicitly said 'yes', 'confirmed', 'correct', 'proceed', or similar confirmation words.\nNEVER assume confirmation. NEVER generate the plan without explicit confirmation.\n\nWhen confirmed, generate in this EXACT format:\n\n========================================\nPROJECT SUMMARY\n========================================\nClient Requirements: [summarize what client needs]\nTech Stack: [list technologies]\nDeployment Target: [where it deploys]\nTimeline: [agreed timeline]\nBudget: [agreed budget]\n\n========================================\nSTEP-BY-STEP IMPLEMENTATION PLAN\n========================================\nStep 1: [title]\n- [detailed action]\n- [detailed action]\n- [detailed action]\n\nStep 2: [title]\n- [detailed action]\n- [detailed action]\n\n[continue for all steps]\n\n========================================\nDELIVERABLES\n========================================\n- [deliverable 1]\n- [deliverable 2]\n- [deliverable 3]\n\n========================================\nIMPORTANT NOTES FOR ENGINEER\n========================================\n- [any warnings or things to watch out for]\n- [prerequisites to check before starting]\n- [potential blockers]\n\n========================================\nESTIMATED TIME BREAKDOWN\n========================================\n[task]: [hours]\n[task]: [hours]\nTotal: [total hours]\n========================================\n\nRULES:\n- Never give vague answers\n- Always be confident and professional\n- If budget seems too low for the scope, professionally mention it and suggest adjustments\n- Never start the project plan until you have: tech stack, deployment target, timeline, and budget\n- Always think like a senior engineer - ask about edge cases, existing infrastructure, and potential blockers\n- NEVER generate the project plan without explicit client confirmation"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "d4e62de1-8421-40ef-9c16-b65322f9febe",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "options": {
+          "maxOutputTokens": 2048,
+          "temperature": 0.7
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1.1,
+      "position": [
+        -208,
+        208
+      ],
+      "id": "71bd8f40-1d60-4235-a5c1-6c68f2289914",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "bO5B3S9njZtZRcaB",
+          "name": "Google Gemini(PaLM) Api account 3"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "contextWindowLength": 20
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.4,
+      "position": [
+        0,
+        208
+      ],
+      "id": "012a294f-c8e9-4fe5-895a-881b40423b2e",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://discord.com/api/webhooks/1511687658408116356/e2ryTybpykRWDlPoOscO6t3lwEW_-A-aU41BTePxcxBmrW4fHM_jC41gYE_OyuDr4qsg",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "content",
+              "value": "=\ud83d\udea8 FIVERR CLIENT UPDATE\n\n{{ $json.output }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        288,
+        176
+      ],
+      "id": "e5772615-5dbc-416f-8eba-56999876a557",
+      "name": "Discord Notification"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://api.github.com/repos/muhammadwaqas964/n8n_Projects/issues",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "token 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"
+            },
+            {
+              "name": "Accept",
+              "value": "application/vnd.github.v3+json"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "title",
+              "value": "=\ud83d\ude80 New Fiverr Project \u2014 {{ $now.toLocaleString() }}"
+            },
+            {
+              "name": "body",
+              "value": "=## Fiverr Client Project Plan\n\n**Generated:** {{ $now.toLocaleString() }}\n\n---\n\n{{ $json.output }}\n\n---\n\n*Auto-generated by Fiverr DevOps Agent*"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        608,
+        0
+      ],
+      "id": "c2520326-d529-48cf-a562-eb1e9654702c",
+      "name": "GitHub Issue"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Discord Notification",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Discord Notification": {
+      "main": [
+        [
+          {
+            "node": "GitHub Issue",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "b81aa0e0-d30f-474d-bd78-2854120f86c5",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "752548cb3fb620b126e7cc26dfeb80129603744ed7c338e7d17edf2f9855f5b8"
+  },
+  "id": "ueFTVDt7epNNZ129",
+  "tags": [
+    {
+      "name": "DevOps",
+      "id": "S0sTcBCVYkYHRq9a",
+      "updatedAt": "2026-06-03T11:28:06.038Z",
+      "createdAt": "2026-06-03T11:28:06.038Z"
+    },
+    {
+      "name": "GitHub",
+      "id": "ThcqWMlhY8E4RRgc",
+      "updatedAt": "2026-06-03T12:27:13.844Z",
+      "createdAt": "2026-06-03T12:27:13.844Z"
+    },
+    {
+      "name": "Fiverr",
+      "id": "mjCmgx6koQbBJ2nL",
+      "updatedAt": "2026-06-03T11:28:06.028Z",
+      "createdAt": "2026-06-03T11:28:06.028Z"
+    }
+  ]
+}
