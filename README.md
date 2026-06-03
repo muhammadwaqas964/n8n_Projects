@@ -1,4 +1,4 @@
-# n8n AI DevOps Agent — Fiverr Client Manager
+# n8n AI DevOps Agent 
 
 An AI-powered agent that automatically qualifies Fiverr clients, gathers complete DevOps project requirements, generates step-by-step implementation plans, sends Discord notifications, and creates GitHub issues — all automatically.
 
